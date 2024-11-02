@@ -12,10 +12,15 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+// Allow requests only from your frontend
+app.use(cors({
+  origin: 'https://google-f-1.onrender.com', // Replace with your actual frontend URL
+  credentials: true,                          // Use this if cookies or auth headers are needed
+}));
+
 app.use(express.json());
 
-
+// Define routes
 app.use('/api/user', userRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/roadmap', roadmapRoutes);
