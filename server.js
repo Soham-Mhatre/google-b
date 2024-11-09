@@ -21,7 +21,7 @@ const app = express();
 
 // Configure CORS for specific frontend URL
 app.use(cors({
-  origin: 'https://google-f-1.onrender.com', // Replace with your actual frontend URL
+  origin: '*', // Replace with your actual frontend URL
   credentials: true,
 }));
 

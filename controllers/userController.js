@@ -7,7 +7,6 @@ export const signup = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      console.log("User already exists with email:", email);
       return res.status(400).json({ error: 'User already exists' });
     }
 
@@ -18,7 +17,7 @@ export const signup = async (req, res) => {
     res.status(201).json({ token, userId: newUser._id });
   } catch (error) {
     console.error('Signup error:', error);
-    res.status(500).json({ error: 'Failed to create user' });
+    return res.status(500).json({ error: 'Failed to create user' });
   }
 };
 
@@ -28,13 +27,11 @@ export const login = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      console.log("No user found with email:", email);
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      console.log("Password does not match for user:", email);
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
@@ -42,6 +39,6 @@ export const login = async (req, res) => {
     res.status(200).json({ token, userId: user._id });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ error: 'Failed to login' });
+    return res.status(500).json({ error: 'Failed to login' });
   }
 };
