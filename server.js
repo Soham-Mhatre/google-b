@@ -8,14 +8,21 @@ import checklistRoutes from './routes/checklistRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
-connectDB();
 
+// Attempt to connect to MongoDB with error handling
+connectDB().then(() => {
+  console.log("Connected to MongoDB successfully");
+}).catch((error) => {
+  console.error("Failed to connect to MongoDB:", error);
+});
+
+// Initialize express app
 const app = express();
 
-// Allow requests only from your frontend
+// Configure CORS for specific frontend URL
 app.use(cors({
   origin: 'https://google-f-1.onrender.com', // Replace with your actual frontend URL
-  credentials: true,                          // Use this if cookies or auth headers are needed
+  credentials: true,
 }));
 
 app.use(express.json());
@@ -26,5 +33,12 @@ app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/roadmap', roadmapRoutes);
 app.use('/api/checklist', checklistRoutes);
 
+// Global error handler for any unhandled errors
+app.use((err, req, res, next) => {
+  console.error("Unhandled error:", err);
+  res.status(500).json({ error: "Internal Server Error" });
+});
+
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
