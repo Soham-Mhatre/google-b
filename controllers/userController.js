@@ -7,6 +7,7 @@ export const signup = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log("User already exists with email:", email);
       return res.status(400).json({ error: 'User already exists' });
     }
 
@@ -27,11 +28,13 @@ export const login = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
+      console.log("No user found with email:", email);
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
+      console.log("Password does not match for user:", email);
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
