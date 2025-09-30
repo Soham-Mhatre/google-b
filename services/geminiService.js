@@ -16,8 +16,38 @@ export const askGemini = async (prompt) => {
     // Use the correct, up-to-date model name
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
+    // Enhanced prompt for better formatting
+    const enhancedPrompt = `${prompt}
+
+Please format your response like ChatGPT with:
+
+**Structure Guidelines:**
+- Use clear section headers with ## for main topics
+- Break content into digestible paragraphs (2-3 sentences max)
+- Use bullet points and numbered lists for better readability
+- Add **bold text** for key concepts and important terms
+- Use *italics* for emphasis
+- Include code examples in \`backticks\` or code blocks when relevant
+- Add horizontal lines (---) to separate major sections
+- Use blockquotes (>) for important notes or tips
+
+**Content Style:**
+- Keep explanations clear and conversational
+- Start with a brief overview, then dive into details
+- Use examples and analogies to explain complex concepts
+- End sections with key takeaways when appropriate
+- Structure long responses with a logical flow
+
+**Visual Organization:**
+- Leave blank lines between sections
+- Use consistent formatting throughout
+- Group related information together
+- Make the response scannable with good visual hierarchy
+
+Format the response to be visually appealing and easy to read, similar to how ChatGPT presents information in cards and well-structured sections.`;
+
     // Generate content
-    const result = await model.generateContent(prompt);
+    const result = await model.generateContent(enhancedPrompt);
     const response = await result.response;
     return response.text();
   } catch (error) {
