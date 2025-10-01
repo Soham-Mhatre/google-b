@@ -6,6 +6,7 @@ import chatbotRoutes from './routes/chatbotRoutes.js';
 import roadmapRoutes from './routes/roadmapRoutes.js';
 import checklistRoutes from './routes/checklistRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import placementRoutes from './routes/placementRoutes.js';
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 app.use('/api/roadmap', roadmapRoutes);
 app.use('/api/checklist', checklistRoutes);
+app.use('/api/placement', placementRoutes);
 
 // Global error handler for any unhandled errors
 app.use((err, req, res, next) => {

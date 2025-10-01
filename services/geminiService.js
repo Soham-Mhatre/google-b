@@ -14,7 +14,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 export const askGemini = async (prompt) => {
   try {
     // Use the correct, up-to-date model name
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     // Enhanced prompt for better formatting
     const enhancedPrompt = `${prompt}
