@@ -46,23 +46,28 @@ function parseRoadmapContent(content) {
 
 export const generateRoadmap = async (req, res) => {
   const { topic, weeks } = req.body;
-  const userId = req.user.id;
+  const userId = req.user ? req.user.id : null; // Handle unauthenticated requests
 
   try {
     const roadmapContent = await getRoadmapFromGeminiAPI(topic, weeks);
 
-    // Parse the roadmapContent
-    const parsedRoadmap = parseRoadmapContent(roadmapContent);
+    // Save to database only if user is authenticated
+    if (userId) {
+      const roadmap = new Roadmap({
+        userId,
+        topic,
+        duration: weeks,
+        content: roadmapContent,
+      });
+      await roadmap.save();
+    }
 
-    const roadmap = new Roadmap({
-      userId,
-      topic,
-      duration: weeks,  // Changed from 'weeks' to 'duration' to match the model
-      content: roadmapContent,
+    // Return the raw markdown content
+    res.status(200).json({ 
+      roadmap: roadmapContent,
+      topic: topic,
+      weeks: weeks
     });
-    await roadmap.save();
-
-    res.status(200).json({ roadmap: parsedRoadmap });
   } catch (error) {
     console.error('Error generating roadmap:', error);
     res.status(500).json({ error: 'Failed to generate roadmap' });
@@ -70,12 +75,17 @@ export const generateRoadmap = async (req, res) => {
 };
 
 export const getRoadmapHistory = async (req, res) => {
-  const userId = req.user.id;
-
   try {
+    const userId = req.user?.id;
+    
+    if (!userId) {
+      return res.status(401).json({ error: 'Authentication required to access roadmap history' });
+    }
+
     const history = await Roadmap.find({ userId }).sort({ createdAt: -1 });
     res.status(200).json({ history });
   } catch (error) {
+    console.error('Error fetching roadmap history:', error);
     res.status(500).json({ error: 'Failed to fetch roadmap history' });
   }
 };

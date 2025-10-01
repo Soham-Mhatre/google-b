@@ -1,6 +1,7 @@
 import express from 'express';
 import Checklist from '../models/Checklist.js';
 import auth from '../middleware/auth.js';
+import optionalAuth from '../middleware/optionalAuth.js';
 
 const router = express.Router();
 
