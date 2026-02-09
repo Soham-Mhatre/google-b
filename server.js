@@ -49,7 +49,7 @@ websocketService.initialize(httpServer);
 
 // Configure CORS for specific frontend URL
 app.use(cors({
-  origin: '*', // Replace with your actual frontend URL
+  origin: ['https://google-f-2.onrender.com', 'http://localhost:5173'], // Production and development URLs
   credentials: true,
 }));
 

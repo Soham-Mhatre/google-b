@@ -14,7 +14,7 @@ class WebSocketService {
   initialize(httpServer) {
     this.io = new Server(httpServer, {
       cors: {
-        origin: '*',
+        origin: ['https://google-f-2.onrender.com', 'http://localhost:5173'],
         methods: ['GET', 'POST'],
         credentials: true
       },
