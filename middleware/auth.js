@@ -20,6 +20,7 @@ const auth = (req, res, next) => {
     
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     req.user = { id: decodedToken.id };
+    req.userId = decodedToken.id; // Add userId for consistency
     next();
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
@@ -32,4 +33,6 @@ const auth = (req, res, next) => {
   }
 };
 
+// Export both default and named exports for compatibility
+export const authenticateToken = auth;
 export default auth;

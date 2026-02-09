@@ -15,5 +15,8 @@ const optionalAuth = (req, res, next) => {
     next();
   }
 };
-
+// Export both default and named export for compatibility with ESM imports
+// Named export
+export { optionalAuth };
+// Default export
 export default optionalAuth;
